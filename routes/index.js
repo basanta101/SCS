@@ -1,0 +1,17 @@
+const express = require("express");
+const router = express.Router();
+const controller = require("../controller/file.controller");
+
+let routes = (app) => {
+  router.post("/upload", controller.upload);
+  router.get("/files", controller.getListFiles);
+  router.get("/files/:name", controller.download);
+  router.delete("/files/:name", controller.remove);
+
+  app.use(router);
+};
+
+module.exports = routes;
+
+// TODO: use this file 
+// https://github.com/bezkoder/express-file-upload/blob/master/src/routes/index.js

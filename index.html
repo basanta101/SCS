@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js File Uploader</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5rem;
+            background-color: #333;
+            /* color: whitesmoke; */
+            color: rgb(247, 119, 140);
+        }
+
+        input,
+        button, 
+        select {
+            font: inherit;
+            width: max-content;
+            color: rgb(247, 119, 140);
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        button {
+            background: rgb(247, 119, 140);
+            color: whitesmoke
+        }
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1.5rem;
+        }
+        .wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        label {
+            font-size: 16px;
+            margin: 12px 0 8px;
+        }
+
+        .left-wrap {
+            width: 50%;
+        }
+
+        .right-wrap {
+            width: 30%;
+            text-align: center;
+        }
+
+        .access-select {
+            height: 34px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+        }
+
+
+        * Style for the label that looks like a button */
+        .file-label {
+            display: inline-block;
+            background-color: #3498db; /* Button background color */
+            color: #fff; /* Button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Change button background color on hover */
+        .file-label:hover {
+            background-color: #2980b9;
+        }
+
+        /* Hide the file input element */
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>SCS</h1>
+    <div class="wrap">
+        <div class="left-wrap">
+            <form id="uploadForm">
+                <div class="row">
+                    <input type="file" id="myFiles"  multiple />
+                <!-- <input type="file" id="myFiles" accept="image/*" multiple /> -->
+                </div>
+                <div class="row">
+                    <label>User</label>
+                    <input type='text' name="user" id='user'>
+                </div>
+                <div class="row">
+                    <label>Destination Folder</label>
+                    <input type='text' name="destinationFolder" id='destinationFolder'>
+                </div>
+                <div class="row">
+                    <label for="select">
+                        Select File Access type
+                    </label>
+                    <select id="access" name="select" class="access-select">
+                        <option value="private">private</option>
+                        <option value="public">public</option>
+                    </select>
+                </div>
+               <div class="row">
+                <button>Submit</button>
+               </div>
+            </form>
+        </div>
+       <div class="right-wrap">
+        <h2></h2>
+        <h3></h3>
+       </div>
+    </div>
+    <script>
+        const form = document.getElementById('uploadForm')
+
+        const sendFiles = async () => {
+            // Object 
+            const myFiles = document.getElementById('myFiles').files
+            const destination= document.getElementById('destinationFolder').value
+            const user= document.getElementById('user').value
+            const access= document.getElementById('access').value
+
+            debugger
+
+            const formData = new FormData()
+
+            Object.keys(myFiles).forEach(key => {
+                formData.append(myFiles.item(key).name, myFiles.item(key))
+                
+            })
+
+            console.log('the form data is ', formData)
+
+            const response = await fetch(`http://localhost:3000/upload?destination=${destination}&user=${user}&access=${access}`, {
+                method: 'POST',
+                body: formData
+            })
+
+            const json = await response.json()
+
+            const h2 = document.querySelector('h2')
+            h2.textContent = `Status: ${json?.status}`
+
+            const h3 = document.querySelector('h3')
+            h3.textContent = json?.message
+
+            console.log(json)
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            sendFiles()
+        })
+    </script>
+</body>
+
+</html>
