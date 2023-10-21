@@ -3,7 +3,7 @@
 A simple file managing system that allows user to upload and download their files.
 
 ## Run Locally
-Clone the projec
+Clone the project
 ```bash
   git clone https://github.com/basanta101/SCS.git
 ```
