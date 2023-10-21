@@ -7,7 +7,8 @@ module.exports = (req, res, next) => {
         message: 'Unauthorized!',
       });
   }
-  const token = authHeader.split(' ')[1];
+  const token = authHeader?.split(' ')[1];
+
   try {
     const user = jwt.verify(token, 'SECRET');
     req.user = user;

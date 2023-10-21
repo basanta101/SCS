@@ -141,39 +141,29 @@ const upload = async (req, res, next) => {
         });
     });
 
-    return res.json({ status: 'success', message: Object.keys(files).toString() });
+    return res.status(201).json({ status: 'success', message: Object.keys(files).toString() });
 
 };
 
 // Download from storage
 const download = (req, res) => {
     const fileName = req.query.filename;
-
     if (!fileName) {
         return res.status(400).json({ status: 'error', message: 'Missing filename in query parameters' });
     }
-
     const filePath = path.join(rootDir, storageDir, fileName);
-
     // Check if the file exists in the specified directory.
-    if (fs.existsSync(filePath)) {
-        // If the file exists, send it as a download attachment.
-        res.download(filePath, (err) => {
-            if (err) {
-                res.status(500).json({ status: 'error', message: err });
-            }
-        });
-    } else {
-        // If the file does not exist, send a 404 not found response.
-        res.status(404).json({ status: 'error', message: 'File not found' });
+    const isFilePresent = fs.existsSync(filePath);
+    if (!isFilePresent) {
+        return res.status(404).send({ message: 'File not found in storage' });
     }
+    return res.download(filePath);
 };
 
 
 const search = async (req, res, next) => {
 
     try {
-
         // get the filename and destination from req.query
         const { filename, destination, startIndex = 0, endIndex = 1, noOfRecords = 10, user } = req.query
         // for a particular folder, a user can only view public files and his own files
@@ -181,8 +171,8 @@ const search = async (req, res, next) => {
         // get all the files that are present in the folder requested(destination)
         // applying a filter i.e a user can only view public files and his own files present in a folder
         const filesFetchedForUser = await filesCollection
-            .find({ filename, destinationFolder: destination, $or: [{ owner: user }, { access: 'public' }] }).toArray() 
-            // {filename: 'HLD_1.pdf', destinationFolder: "/staging/assets", $or: [{ owner: "bruce@wayne.com" }, { access: "public"}]}
+            .find({ filename, destinationFolder: destination, $or: [{ owner: user }, { access: 'public' }] }).toArray()
+        // {filename: 'HLD_1.pdf', destinationFolder: "/staging/assets", $or: [{ owner: "bruce@wayne.com" }, { access: "public"}]}
         debugger
         return res.status(200).send({ files: filesFetchedForUser })
 
@@ -190,11 +180,7 @@ const search = async (req, res, next) => {
     } catch (err) {
         return res.status(500).send({ message: err.message, status: 'Something went wrong' })
     }
-
-
 }
-
-
 
 module.exports = {
     upload,

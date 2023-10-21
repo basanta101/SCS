@@ -1,91 +1,50 @@
-const { check } = require('express-validator');
+const { check, query, validationResult } = require('express-validator');
+const { client } = require('../config/db')
+const db = client.db("SCS");
+const users = db.collection("users");
+const { body } = require('express-validator')
 
-// const db = client.db("SCS");
-// const users = db.collection("users");
+const loginValidator = [
+  body('email', 'Invalid does not Empty').not().isEmpty(),
+  body('email', 'Invalid email').isEmail(),
+  body('password', 'The minimum password length is 6 characters').isLength({min: 6}),
+]
+
+const createValidator = [
+  body('email', 'email cannot be Empty').not().isEmpty(),
+  body('email', 'Invalid email').isEmail(),
+  body('password', 'password does not Empty').not().isEmpty(),
+  body('password', 'The minimum password length is 6 characters').isLength({min: 6}),
+]
 
 
 // Middleware to check if email is already taken
-function checkEmailTaken() {
-    const users = [] //TODO: this value has to read from the db
-    return (req, res, next) => {
-        const isEmailTaken = users.some(user => user.email === req.body.email);
-        if (isEmailTaken) {
-            return res.status(400).json({
-                status: 'fail',
-                message: 'Email Taken!',
-            });
-        }
-        next();
-    };
-}
-
-// Middleware to check if the request has an email parameter
-function checkEmailParam(req, res, next) {
-    const { email } = req.query;
-    if (!email) {
+const isEmailAvailable = async (req, res, next) => {
+    const { email } = req.body;
+    const user = await users.findOne({ email })
+    debugger
+    if (user) {
         return res.status(400).json({
-            status: 'fail',
-            message: 'Email parameter is required in the request',
+            status: 'Error',
+            message: 'Email Taken!',
         });
     }
     next();
-}
-// Helper function to retrieve news preferences for a user or return an error
-function getNewsPreferences(email, users) {
-    // Find the user by email in the users array
-    const user = users.find(user => user.email === email);
 
-    if (!user) {
-        // User not found, return an error response
-        return {
-            status: 'fail',
-            message: 'User not found',
-        };
-    }
-
-    if (!user.preferences || user.preferences.length === 0) {
-        // User has no preferences, return an error response
-        return {
-            status: 'fail',
-            message: 'User has no news preferences',
-        };
-    }
-
-    // If the user is found and has preferences, return their preferences
-    return {
-        status: 'success',
-        data: {
-            preferences: user.preferences,
-        },
-    };
 }
 
-// Middleware to check if the request has an email parameter
-function checkEmailExists (users) {
-    return function (req, res, next) {
-        const { email } = req.query;
-    
-        // Check if the email is present in the users array
-        const userExists = users.some(user => user.email === email);
-    
-        if (!userExists) {
-            // User not found, return an error response with proper status and message
-            return res.status(404).json({
-                status: 'fail',
-                message: 'User not found',
-            });
-        }
-    
-        // User exists, allow the execution to proceed to the next middleware or route handler
-        next();
+const isEmailPresentInDB = async(req, res, next) => {
+    const { email } = req.body;
+    const user = await users.findOne({ email })
+    if(!user) {
+        return res.status(400).json({
+            status: 'Error',
+            message: 'Email Not found!',
+        });
     }
+    next()
 }
 
-// Define validation checks as middleware functions
-const registrationValidation = [
-    check('email').isEmail().normalizeEmail(),
-    check('password').isLength({ min: 6 }),
-];
+module.exports = { isEmailAvailable, loginValidator, createValidator, isEmailPresentInDB };
 
-
-module.exports = { checkEmailTaken, checkEmailParam, getNewsPreferences, checkEmailExists, registrationValidation };
+// https://medium.com/@hcach90/using-express-validator-for-data-validation-in-nodejs-6946afd9d67e

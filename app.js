@@ -40,7 +40,7 @@ app.use(userRoute)
 
 
 // Middleware to protect routes below this point using authentication
-// app.use(auth) // uncomment this for authentication to be enabled
+app.use(auth) // uncomment this for authentication to be enabled
 
 app.use(fileRouter)
 

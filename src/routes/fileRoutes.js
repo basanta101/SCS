@@ -4,7 +4,7 @@ const filesPayloadExists = require('../middlewares/fileMiddlewares/filesPayloadE
 const fileExtLimiter = require('../middlewares/fileMiddlewares/fileExtLimiter');
 const fileSizeLimiter = require('../middlewares/fileMiddlewares/fileSizeLimiter');
 const fileController = require('../controllers/fileController')
-const { mockServiceToGetFileLocation } = require('../middlewares/fileMiddlewares/fetchFileLocations')
+const { checkPermissionsForFileDownload } = require('../middlewares/fileMiddlewares/fetchFileLocations')
 
 fileRouter.post('/upload',
     fileUpload({ createParentPath: true }),
@@ -15,7 +15,7 @@ fileRouter.post('/upload',
 );
 fileRouter.get('/download',
     // the file Id is searched in the file table, once we get that, we use it to get the file contents from the storage
-    mockServiceToGetFileLocation,
+    checkPermissionsForFileDownload,
     fileController.download
 );
 // for download, the filename must be an exact match.
