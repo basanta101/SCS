@@ -22,7 +22,11 @@ fileRouter.get('/download',
 
 fileRouter.get('/files',
     fileController.search)
-// filename and location must be an exact match    
+// filename and location must be an exact match   
+
+// fileRouter.get('/list',
+//     fileController.list)
+// filename and location must be an exact match 
 
 module.exports = fileRouter;
 

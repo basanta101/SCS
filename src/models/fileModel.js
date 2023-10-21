@@ -4,9 +4,6 @@ exports.createFile = (file) => {
         //_id: fileId, // unique id of each file, created for every version by mongo
         filename, // filename 
         destinationFolder, // the location where the client stored the file
-        owner,
-        access
-        // storageLocation, // where the file is actually stored.
     }
 }
 

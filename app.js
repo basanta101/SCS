@@ -16,6 +16,7 @@ global.__basedir = __dirname;
 
 const app = express();
 
+// TODO: use the rate limiter
 // app.use(cors());
 app.use(routes);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +41,7 @@ app.use(userRoute)
 
 
 // Middleware to protect routes below this point using authentication
-app.use(auth) // uncomment this for authentication to be enabled
+app.use(auth)
 
 app.use(fileRouter)
 

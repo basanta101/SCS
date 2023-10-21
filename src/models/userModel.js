@@ -4,7 +4,7 @@ exports.createUser = (user) => {
         username,
         email,
         password,
-        role
+        // role
     }
 }
 

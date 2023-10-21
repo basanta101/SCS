@@ -2,13 +2,12 @@ const createVersion = (newVersion) => {
     const { fileName, fileLocation, fileId } = newVersion
     const versionNumber = ''
     return {
-        
         fileName, // added only when the file is created.
-        fileLocation, // Location where the file is stored, and all its versions, by the client
+        // fileLocation, // Location where the file is stored, and all its versions, by the client
         versions: [{
             versionNumber,
             fileId
-        }], // List of versions
+        },], // List of versions
     }
 }
 

@@ -60,7 +60,9 @@ const login = async (req, res) => {
                 const tokenPayload = {
                     email: user.email,
                 };
-                const accessToken = jwt.sign(tokenPayload, 'SECRET');
+                const accessToken = jwt.sign(tokenPayload, 'SECRET', {
+                    expiresIn: 86400
+                  });
                 return res.status(201).json({
                     status: 'success',
                     message: 'User Logged In!',

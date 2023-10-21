@@ -1,4 +1,3 @@
-// const uploadFile = require("../middlewares/upload");
 const { createFile } = require("../models/fileModel");
 const { client } = require('../config/db');
 const db = client.db("SCS");
@@ -47,37 +46,28 @@ const appendVersion = (filePath) => {
 const upload = async (req, res, next) => {
 
     const files = req.files;
-
-    console.log('upload controller reached', req.query.destination)
-
-
     // Iterate through each uploaded file.
     Object.keys(files).forEach(async (key) => {
         // Construct the initial file path for the uploaded file.
         let filepath = path.join(rootDir, storageDir, files[key].name);
         const file = files[key]
-        const filename = files[key].name
-        const destinationFolder = req.query.destination
-        const currentUser = req.query.user
-        const fileAccessType = req.query.access;
-        const fileMIMEType = file.mimetype; // MIME type of the file
-        const fileEncoding = file.encoding;
+        const { name: filename, mimetype: fileMIMEType, encoding: fileEncoding } = file
+        const { destinationFolder, currentUser, fileAccessType } = req.query
+
         const fileExistsInSameLocation = await checkFileExistsInSameLocation(filename, destinationFolder)
-        debugger
+
         if (!fileExistsInSameLocation) {
             const uploadDate = new Date();
             const newFile = createFile({
                 filename,
-                uploadDate,
-                owner: currentUser,
+                // uploadDate,
                 destinationFolder,
-                access: fileAccessType
             });
 
             const { insertedId: fileId } = await filesCollection.insertOne(newFile);
             await metaCollections.insertOne({ fileId, fileMIMEType, fileEncoding, filename, access: fileAccessType });
             await versionsCollection.insertOne({ destinationFolder, filename, versions: [{ versionNumber: 1, uploadDate, fileId, filename }] });
-            await permissionsCollections.insertOne({ fileId, owner: currentUser, filename: filename, access: fileAccessType });
+            await permissionsCollections.insertOne({ fileId, owner: currentUser, filename, access: fileAccessType });
         }
 
 
@@ -138,7 +128,7 @@ const upload = async (req, res, next) => {
         });
     });
 
-    return res.status(201).json({ status: 'success', message: Object.keys(files).toString() });
+    return res.status(201).json({ status: 'success', message: 'Upload Successful' });
 
 };
 
@@ -162,15 +152,17 @@ const search = async (req, res, next) => {
 
     try {
         // get the filename and destination from req.query
-        const { filename, destination, startIndex = 0, endIndex = 1, noOfRecords = 10, user } = req.query
+        const { filename, destination: destinationFolder, startIndex = 0, endIndex = 1, noOfRecords = 10, user } = req.query
         // for a particular folder, a user can only view public files and his own files
+
+        const query = { ...(filename ? { filename } : {}), ...(destinationFolder ? { destinationFolder } : {})}
 
         // get all the files that are present in the folder requested(destination)
         // applying a filter i.e a user can only view public files and his own files present in a folder
         const filesFetchedForUser = await filesCollection
-            .find({ filename, destinationFolder: destination, $or: [{ owner: user }, { access: 'public' }] }).toArray()
-        // {filename: 'HLD_1.pdf', destinationFolder: "/staging/assets", $or: [{ owner: "bruce@wayne.com" }, { access: "public"}]}
-        debugger
+            .find({ ...query, $or: [{ owner: user }, { access: 'public' }] }).toArray()
+            // .find({ filename, destinationFolder, $or: [{ owner: user }, { access: 'public' }] }).toArray()
+        //example: {filename: 'HLD_1.pdf', destinationFolder: "/staging/assets", $or: [{ owner: "bruce@wayne.com" }, { access: "public"}]}
         return res.status(200).send({ files: filesFetchedForUser })
 
 
@@ -179,8 +171,20 @@ const search = async (req, res, next) => {
     }
 }
 
+const list = async (req, res) => {
+    try {
+        const { destination: destinationFolder, user } = req.query
+        const allFilesInRequestedFolder = await filesCollection
+            .find({ destinationFolder, $or: [{ owner: user }, { access: 'public' }] }).toArray()
+        return res.status(200).send({ files: allFilesInRequestedFolder })
+    } catch (err) {
+        return res.status(500).send({ err, messages: 'Something went wrong' })
+    }
+}
+
 module.exports = {
     upload,
     download,
-    search
+    search,
+    list
 };

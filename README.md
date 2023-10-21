@@ -73,9 +73,9 @@ Start the dev server
 | `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
-#### search: search for files
+#### files: search for files
 ```http
-  GET /search 
+  GET /files 
 ```
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
@@ -84,19 +84,17 @@ Start the dev server
 | `user`| `string` | **Required**. user trying to download the file|
 
 
-#### list: list all file in a folder
+#### files: list all file in a folder
 ```http
-  GET /list 
+  GET /files 
 ```
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `filename`| `string` | **Required**. location to store the file|
 | `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
-## ERD
-<img src='./ERD.png' width='100%' height=500px>
 
 ## Tech Stack
 
 **Server:** Node, Express
+node version: v20.8.1
