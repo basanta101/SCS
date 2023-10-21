@@ -94,12 +94,9 @@ Start the dev server
 | `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
+## ERD
+<img src='./ERD.png' width='100%' height=500px>
 
 ## Tech Stack
 
 **Server:** Node, Express
-
-
-## ERD
-<img src='./ERD.png' width='100%' height=500px>
-
