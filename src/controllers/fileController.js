@@ -55,7 +55,6 @@ const upload = async (req, res, next) => {
     Object.keys(files).forEach(async (key) => {
         // Construct the initial file path for the uploaded file.
         let filepath = path.join(rootDir, storageDir, files[key].name);
-        debugger
         const file = files[key]
         const filename = files[key].name
         const destinationFolder = req.query.destination
@@ -66,7 +65,6 @@ const upload = async (req, res, next) => {
         const fileExistsInSameLocation = await checkFileExistsInSameLocation(filename, destinationFolder)
         debugger
         if (!fileExistsInSameLocation) {
-            // await createNewFileEntry({ currentUser, destinationFolder, metadata});
             const uploadDate = new Date();
             const newFile = createFile({
                 filename,
@@ -75,7 +73,6 @@ const upload = async (req, res, next) => {
                 destinationFolder,
                 access: fileAccessType
             });
-
 
             const { insertedId: fileId } = await filesCollection.insertOne(newFile);
             await metaCollections.insertOne({ fileId, fileMIMEType, fileEncoding, filename, access: fileAccessType });
