@@ -1,5 +1,5 @@
 
-# Simple Cloud storage
+# SCS: Simple Cloud Storage
 A simple file managing system that allows user to upload and download their files.
 
 ## Run Locally
