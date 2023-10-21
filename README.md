@@ -73,7 +73,7 @@ Start the dev server
 | `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
-#### files: search for files
+#### files: search for files in a folder
 ```http
   GET /files 
 ```
@@ -92,6 +92,10 @@ Start the dev server
 | :-------- | :------- | :-------------------------------- |
 | `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
+
+
+## Docker tag
+https://hub.docker.com/r/bit121/simple-file-storage/tags
 
 
 ## Tech Stack
