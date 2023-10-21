@@ -97,6 +97,8 @@ Start the dev server
 ## Docker tag
 https://hub.docker.com/r/bit121/simple-file-storage/tags
 
+## Postman collection
+The postman collections is added to the repo.
 
 ## Tech Stack
 
