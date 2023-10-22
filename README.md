@@ -80,17 +80,15 @@ Start the dev server
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `filename`| `string` | **Required**. location to store the file|
-| `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
 
-#### files: list all file in a folder
+#### list: list all files uploaded by the user
 ```http
-  GET /files 
+  GET /list 
 ```
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `destination`| `string` | **Required**. path/to/file.    |
 | `user`| `string` | **Required**. user trying to download the file|
 
 
