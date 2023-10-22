@@ -177,7 +177,7 @@
 			"response": []
 		},
 		{
-			"name": "List contents of a folder",
+			"name": "List all files uploaded by a user",
 			"event": [
 				{
 					"listen": "test",
@@ -210,7 +210,53 @@
 			"response": []
 		},
 		{
-			"name": "Search a file in a folder",
+			"name": "Search a file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "name",
+						"value": "somename",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/download?filename=HLD_1.pdf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"download"
+					],
+					"query": [
+						{
+							"key": "filename",
+							"value": "HLD_1.pdf"
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "clear all data of files",
 			"event": [
 				{
 					"listen": "test",
