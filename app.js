@@ -45,18 +45,18 @@ app.use(auth)
 
 app.use(fileRouter)
 
-app.listen(process.env.PORT || PORT, (error) =>{
-    if(!error)
+app.listen(process.env.PORT || PORT, (error) => {
+    if (!error)
         console.log("Server is Successfully Running and App is listening on port " + PORT);
     else
         console.log("Error occurred, server can't start", error);
-    }
-  );
+}
+);
 
 
 app.use(errorController.get404)
 
-run().catch(console.dir) 
+run().catch(console.dir)
 
 // SECURITY BEST PRACTICES CHECK
 // VULNERABILITY CHECKS

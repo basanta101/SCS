@@ -24,10 +24,11 @@ fileRouter.get('/files',
     fileController.search)
 // filename and location must be an exact match   
 
-// fileRouter.get('/list',
-//     fileController.list)
+fileRouter.get('/list',
+    fileController.list)
+
+fileRouter.get('/clear',
+    fileController.clearAll)
 // filename and location must be an exact match 
 
 module.exports = fileRouter;
-
-// TODO: add a middleware to check if file is valid.

@@ -1,13 +1,11 @@
 const createVersion = (newVersion) => {
     const { fileName, fileLocation, fileId } = newVersion
-    const versionNumber = ''
     return {
         fileName, // added only when the file is created.
         // fileLocation, // Location where the file is stored, and all its versions, by the client
-        versions: [{
-            versionNumber,
-            fileId
-        },], // List of versions
+        versions : {
+            v1: fileId
+        }, // List of versions
     }
 }
 
@@ -15,17 +13,12 @@ const createVersion = (newVersion) => {
 {
         
         fileName: 'sample.pdf',
-        fileLocation: '/prod/assets/', // Location where the file is stored, and all its versions, by the client
-        versions: [
+        fileLocation: '/path/to/file'
+        versions:
             {
-                versionNumber: 1, // Version number (1 for the initial version)
-                fileId: 'file_123', // id of a file, obtained after uploading.
+                v1: fieldId1,
+                v2: fieldId2
+                // ... more version entries for the same file
             },
-            {
-                versionNumber: 2, // Version number (incremental number)
-                fileId: 'file_234', // id of a file, obtained after uploading.
-            }
-            // ... more version entries for the same file
-        ], // List of versions
     }
 */

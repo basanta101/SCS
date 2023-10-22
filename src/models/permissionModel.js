@@ -5,7 +5,7 @@ exports.createPermission = (permissions) => {
         fileName,
         accessType,
         owner,
-        users,
+        // users,
     }
 
 }
