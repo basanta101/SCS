@@ -185,7 +185,6 @@ const list = async (req, res) => {
     }
 }
 
-
 // this code just exists for helping in debug.
 const clearAll = async (req, res) => {
     try {

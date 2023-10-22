@@ -89,7 +89,7 @@ Start the dev server
 ```
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `user`| `string` | **Required**. user trying to download the file|
+| `user`| `string` | **Required**. user who uploaded the file|
 
 
 ## Docker tag
