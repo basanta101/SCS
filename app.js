@@ -1,4 +1,6 @@
 const express = require("express");
+const fs =require("fs");
+const morgan = require('morgan')
 
 const path = require("path");
 const bodyParser = require('body-parser')
@@ -15,6 +17,12 @@ global.__storage = 'files_storage'
 global.__basedir = __dirname;
 
 const app = express();
+
+// create a write stream (in append mode)
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+ 
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
 
 // TODO: use the rate limiter
 // app.use(cors());
