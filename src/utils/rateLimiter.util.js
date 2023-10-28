@@ -1,3 +1,4 @@
+const rateLimit = require("express-rate-limit");
 let rateLimiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minutes
     max: 100,
@@ -11,3 +12,5 @@ let rateLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false
 });
+
+exports.defaults = { rateLimiter }

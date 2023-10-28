@@ -72,7 +72,6 @@
         .row {
             display: flex;
             flex-direction: column;
-            /* align-items: center; */
         }
 
 
@@ -144,17 +143,12 @@
             const destination= document.getElementById('destinationFolder').value
             const user= document.getElementById('user').value
             const access= document.getElementById('access').value
-
-            debugger
-
             const formData = new FormData()
 
             Object.keys(myFiles).forEach(key => {
                 formData.append(myFiles.item(key).name, myFiles.item(key))
-                
             })
 
-            console.log('the form data is ', formData)
 
             const response = await fetch(`http://localhost:3000/upload?destination=${destination}&user=${user}&access=${access}`, {
                 method: 'POST',
@@ -165,11 +159,9 @@
 
             const h2 = document.querySelector('h2')
             h2.textContent = `Status: ${json?.status}`
-
+            
             const h3 = document.querySelector('h3')
             h3.textContent = json?.message
-
-            console.log(json)
         }
 
         form.addEventListener('submit', (e) => {

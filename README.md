@@ -2,6 +2,18 @@
 # SCS: Simple Cloud Storage
 A simple file managing system that allows user to upload and download their files.
 
+## Docker tag
+https://hub.docker.com/r/bit121/simple-file-storage/tags
+
+## Postman collection
+The postman collections is added to the repo, with a filename of SCS.postman_collection.json.
+
+## Tech Stack
+
+**Server:** Node, Express
+##
+Node version: v20.8.1
+
 ## Run Locally
 Clone the project
 ```bash
@@ -90,16 +102,3 @@ Start the dev server
 | Query-params | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `user`| `string` | **Required**. user who uploaded the file|
-
-
-## Docker tag
-https://hub.docker.com/r/bit121/simple-file-storage/tags
-
-## Postman collection
-The postman collections is added to the repo.
-
-## Tech Stack
-
-**Server:** Node, Express
-##
-Node version: v20.8.1

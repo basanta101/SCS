@@ -1,4 +1,3 @@
-const { check, query, validationResult } = require('express-validator');
 const { client } = require('../config/db')
 const db = client.db("SCS");
 const users = db.collection("users");
@@ -22,7 +21,6 @@ const createValidator = [
 const isEmailAvailable = async (req, res, next) => {
     const { email } = req.body;
     const user = await users.findOne({ email })
-    debugger
     if (user) {
         return res.status(400).json({
             status: 'Error',

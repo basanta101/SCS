@@ -15,7 +15,7 @@ const checkFileExistsInSameLocation = async (filename, destinationFolder) => {
     return await filesCollection.findOne({ filename, destinationFolder });
 }
 
-const upload = async (req, res, next) => {
+const upload = async (req, res) => {
 
     const files = req.files;
     // Iterate through each uploaded file.
@@ -81,7 +81,6 @@ const upload = async (req, res, next) => {
 
         // Move the uploaded file to the specified 'filepath'.
         files[key].mv(filepath, (err) => {
-            console.log('moving file');
             if (err) {
                 // If there's an error during the file move, send a 500 error response.
                 return res.status(500).json({ status: "error", message: err });
@@ -110,8 +109,8 @@ const download = (req, res) => {
     return res.download(filePath);
 };
 
-const search = async (req, res, next) => {
-    const { filename, destination: destinationFolder, startIndex = 0, endIndex = 1, noOfRecords = 10, user } = req.query
+const search = async (req, res) => {
+    const { filename, user } = req.query
 
     try {
 
@@ -144,7 +143,6 @@ const search = async (req, res, next) => {
 
 
     } catch (err) {
-        console.log('error', err)
         return res.status(500).send({ message: err.message, status: 'Something went wrong' })
     }
 }

@@ -52,10 +52,8 @@ const login = async (req, res) => {
         bcrypt.compare(req.body.password, user.password, function (err, response) {
             if (err) {
                 // handle error
-                console.log('error')
                 return res.status(500).json({ status: 'error', message: 'Something went wrong' });
             }
-            debugger
             if (response) {
                 const tokenPayload = {
                     email: user.email,
